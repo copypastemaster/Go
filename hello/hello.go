@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-
-	"rsc.io/quote"
+	"strings"
+	"unsafe"
 )
 
 const (
@@ -16,8 +16,10 @@ const (
 )
 
 func main() {
-	fmt.Println(quote.Opt())
-	fmt.Println(Hello("Nigga", "French"))
+	s := "abc"
+	clone := strings.Clone(s)
+	fmt.Println(s == clone)
+	fmt.Println(unsafe.StringData(s) == unsafe.StringData(clone))
 }
 
 func Hello(name, language string) string {
