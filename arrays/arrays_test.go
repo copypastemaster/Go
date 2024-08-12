@@ -65,33 +65,35 @@ func SumAll(numbersToSum ...[]int) []int {
 }
 
 func TestSumAllTails(t *testing.T) {
-	t.Run("Slices with tails", func(t *testing.T) {
-		got := SumAllTails([]int{1, 4, 5}, []int{0, 9})
-		want := []int{9, 9}
-
+	checkSums := func(t testing.TB, got, want []int) {
+		t.Helper()
 		if !reflect.DeepEqual(got, want) {
-			t.Errorf("got %v, want %v", got, want)
+			t.Errorf("got %v want %v", got, want)
 		}
+	}
+
+	t.Run("make the sums of tails of", func(t *testing.T) {
+		got := SumAllTails([]int{1, 2}, []int{0, 9})
+		want := []int{2, 9}
+		checkSums(t, got, want)
 	})
 
-	t.Run("Slices without tails, but called.", func(t *testing.T) {
-		got := SumAllTails([]int{}, []int{10})
-		want := []int{0, 0}
-
-		if !reflect.DeepEqual(got, want) {
-			t.Errorf("Got %v, want %v", got, want)
-		}
+	t.Run("safely sum empty slices", func(t *testing.T) {
+		got := SumAllTails([]int{}, []int{3, 4, 5})
+		want := []int{0, 9}
+		checkSums(t, got, want)
 	})
 
 }
 
 func SumAllTails(numbers ...[]int) []int {
 	var sums []int
+
 	for _, nums := range numbers {
 		if len(nums) == 0 {
 			sums = append(sums, 0)
 		} else {
-			tail := numbers[1:]
+			tail := nums[1:]
 			sums = append(sums, Sum(tail))
 		}
 	}
